@@ -1,3 +1,7 @@
+/*
+
+*/
+
 //* LIBRARIES: ---------------------------------------------------------------------------------
 
 #include <Arduino.h>
@@ -91,14 +95,15 @@ MENU_SCREEN(homePromptScreen, homePromptItems,
 
 MENU_SCREEN(stopScreen, stopItems,
     ITEM_BASIC("E-STOP TRIGGERED!"),
+    ITEM_BASIC("Reset or continue?"),
     ITEM_COMMAND("Reset", [](){
-        Serial.print('R');
-        strcpy(turntableStatus, "Waiting");
+        Serial.print('E');
+        strcpy(turntableStatus, "Homing");
         menu.setScreen(mainScreen);
     }),
     ITEM_COMMAND("Continue", [](){
         Serial.print('C');
-        strcpy(turntableStatus, "Waiting");
+        strcpy(turntableStatus, "Turning");
         menu.setScreen(mainScreen);
     })
 );
@@ -169,6 +174,8 @@ void switchScreen(int screen) {
             break;
     }
 }
+
+//* ISR: ---------------------------------------------------------------------------------------
 
 void estop() {
     estopSwitch = true;
